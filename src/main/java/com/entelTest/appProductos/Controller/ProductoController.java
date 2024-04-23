@@ -2,6 +2,7 @@ package com.entelTest.appProductos.Controller;
 
 import com.entelTest.appProductos.Entity.Producto;
 import com.entelTest.appProductos.Entity.ProductoRequest;
+import com.entelTest.appProductos.Entity.ProductoResponse;
 import com.entelTest.appProductos.Repository.ProductoRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -81,13 +82,41 @@ public class ProductoController {
     @Tag(name = "Producto")
     @PostMapping("/BuscarProducto")
     public  ResponseEntity<?> obtenerProductoPorNombre(@RequestBody ProductoRequest productoRequest){
-
+        ProductoResponse response = new ProductoResponse();
         List<Producto> listaProducto = _productoRepository.findAllByNombreProducto(productoRequest.getNombreProducto());
 
         if (!listaProducto.isEmpty()){
-            return  new ResponseEntity<>(listaProducto, HttpStatus.OK);
+            response.setListaProducto(listaProducto);
+            response.setMensaje("Se ha encontrado Producto: " + productoRequest.getNombreProducto() +
+                    " Cantidad: " + listaProducto.size());
+            response.setCodStatus(200);
+            return  new ResponseEntity<>(response, HttpStatus.OK);
         }else{
-            return  new ResponseEntity<>("Mensaje: Producto No encontrado", HttpStatus.NOT_FOUND);
+            response.setListaProducto(listaProducto);
+            response.setMensaje("Producto No encontrado");
+            response.setCodStatus(404);
+            return  new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @Tag(name = "Producto")
+    @PostMapping("/BuscarProductoIgnoreCase")
+    public  ResponseEntity<?> obtenerProductoPorNombreIgnoreCase(@RequestBody ProductoRequest productoRequest){
+        ProductoResponse response = new ProductoResponse();
+        List<Producto> listaProducto = _productoRepository.findByNombreProductoIgnoreCase(productoRequest.getNombreProducto());
+
+        if (!listaProducto.isEmpty()){
+            response.setListaProducto(listaProducto);
+            response.setMensaje("Se ha encontrado Producto: " + productoRequest.getNombreProducto() +
+                    " Cantidad: " + listaProducto.size());
+            response.setCodStatus(200);
+            return  new ResponseEntity<>(response, HttpStatus.OK);
+        }else{
+            response.setListaProducto(listaProducto);
+            response.setMensaje("Producto No encontrado");
+            response.setCodStatus(404);
+            return  new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
     }

@@ -15,4 +15,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
      */
     List<Producto> findAllByNombreProducto(String nombreProducto);
 
+    /**
+     * @param nombreProducto
+     * @return Listado de Productos encontrados Ignorando si son mayusculas o minusculas
+     */
+    List<Producto> findByNombreProductoIgnoreCase(String nombreProducto);
+
 }
