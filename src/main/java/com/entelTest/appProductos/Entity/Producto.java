@@ -1,12 +1,17 @@
 package com.entelTest.appProductos.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.NoArgsConstructor;
+
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "producto")
 public class Producto {

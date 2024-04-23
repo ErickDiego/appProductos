@@ -21,8 +21,12 @@ import java.util.Optional;
 @RequestMapping("/producto")
 public class ProductoController {
 
+    private final ProductoRepository _productoRepository;
+
     @Autowired
-    private ProductoRepository _productoRepository;
+    public ProductoController(ProductoRepository productoRepository) {
+        this._productoRepository = productoRepository;
+    }
 
     @Tag(name = "Producto")
     @GetMapping("/{id}")
