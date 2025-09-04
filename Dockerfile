@@ -1,14 +1,12 @@
-# Utiliza una imagen base oficial de OpenJDK 17
-FROM eclipse-temurin:17-jre-alpine
-
-# Establece el directorio de trabajo dentro del contenedor
+# Etapa 1: Construcción con Maven
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copia el archivo JAR generado por Spring Boot al contenedor
-COPY target/*.jar app.jar
-
-# Expone el puerto por defecto de Spring Boot
+# Etapa 2: Ejecución con JRE liviano
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Comando para ejecutar la aplicación Spring Boot
 ENTRYPOINT ["java", "-jar", "app.jar"]
